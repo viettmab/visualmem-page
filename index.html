@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Personal Visual Memory from Explicit and Implicit Evidence">
+  <meta name="keywords" content="VisualMem, personal visual memory, multimodal memory, long-term memory, AI agents, MLLM">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta property="og:image" content="./static/images/teaser.png" />
+  <meta property="og:title" content="Personal Visual Memory from Explicit and Implicit Evidence" />
+  <meta property="og:description" content="VisualMem: a benchmark and hybrid visual-text memory framework for personal visual memory." />
+
+  <title>VisualMem | Personal Visual Memory</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <link rel="icon" href="./static/images/visualmem-icon.png">
+
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js"></script>
+</head>
+
+<style>
+  :root {
+    --vm-blue: #2563eb;
+    --vm-cyan: #0891b2;
+    --vm-purple: #7c3aed;
+    --vm-green: #16a34a;
+    --vm-orange: #ea580c;
+    --vm-dark: #111827;
+    --vm-muted: #4b5563;
+    --vm-light: #f5f7fb;
+    --vm-border: #e5e7eb;
+  }
+
+  body {
+    font-family: 'Noto Sans', sans-serif;
+    color: var(--vm-dark);
+    background-color: #ffffff;
+  }
+
+  .publication-title {
+    font-family: 'Google Sans', 'Noto Sans', sans-serif;
+    line-height: 1.12;
+  }
+
+  .publication-title-row {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.18em;
+    justify-content: center;
+  }
+
+  .publication-title-icon {
+    height: 72px;
+    width: auto;
+  }
+
+  .publication-title-main {
+    align-items: center;
+    display: inline-flex;
+    gap: 0.25em;
+    justify-content: center;
+  }
+
+  .publication-title-subline {
+    display: block;
+  }
+
+  .publication-authors {
+    font-family: 'Google Sans', 'Noto Sans', sans-serif;
+  }
+
+  .author-list {
+    color: #1e88e5;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.8rem;
+    justify-content: center;
+    margin-top: 0.75rem;
+  }
+
+  .author-list a {
+    color: #1e88e5;
+    text-decoration: none;
+  }
+
+  .author-list a:hover {
+    text-decoration: underline;
+  }
+
+  .author-list sup {
+    font-size: 0.68em;
+    top: -0.45em;
+  }
+
+  .advisor-marker {
+    color: #b91c1c;
+    font-size: 0.72em;
+    margin-left: 0.1rem;
+    position: relative;
+    top: -0.45em;
+  }
+
+  .affiliation-logos {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.6rem 2.4rem;
+    justify-content: center;
+    margin-top: 0.75rem;
+  }
+
+  .affiliation-logo {
+    max-height: 72px;
+    width: auto;
+  }
+
+  .affiliation-logo.adobe-logo {
+    max-height: 46px;
+  }
+
+  .affiliation-logo.uwmadison-logo {
+    max-height: 56px;
+  }
+
+  .affiliation-list {
+    color: #2f3337;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2rem;
+    justify-content: center;
+    margin-top: 0.35rem;
+  }
+
+  .affiliation-list sup {
+    font-size: 0.65em;
+    margin-right: 0.18rem;
+    top: -0.45em;
+  }
+
+  .advising-note {
+    color: #2f3337;
+    font-style: italic;
+    margin-top: 0.45rem;
+  }
+
+  .publication-awards {
+    color: var(--vm-purple);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .hero {
+    background: radial-gradient(circle at top left, #e0f2fe 0, transparent 34%),
+                radial-gradient(circle at top right, #ede9fe 0, transparent 30%),
+                #ffffff;
+  }
+
+  .hero-body {
+    padding-bottom: 2.5rem;
+  }
+
+  .subtitle-line {
+    font-size: 1.9rem;
+    font-weight: 700;
+    margin-top: 0.65rem;
+  }
+
+  .blue-text { color: var(--vm-blue); }
+  .cyan-text { color: var(--vm-cyan); }
+  .purple-text { color: var(--vm-purple); }
+  .green-text { color: var(--vm-green); }
+  .orange-text { color: var(--vm-orange); }
+
+  .publication-links .button {
+    margin: 0.25rem 0.15rem;
+    font-weight: 600;
+  }
+
+  .teaser-img {
+    width: 100%;
+    max-width: 980px;
+    border-radius: 18px;
+    box-shadow: 0 18px 40px rgba(17, 24, 39, 0.12);
+    border: 1px solid var(--vm-border);
+    background: white;
+  }
+
+  .figure-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 14px;
+    box-shadow: 0 12px 28px rgba(17, 24, 39, 0.10);
+    background-color: #ffffff;
+  }
+
+  .caption {
+    color: var(--vm-muted);
+    font-family: 'Google Sans', 'Noto Sans', sans-serif;
+    font-size: 1rem;
+    font-style: italic;
+    line-height: 1.45;
+    margin: 0.85rem auto 1.6rem;
+    max-width: 1200px;
+    text-align: center;
+  }
+
+  .teaser-challenge-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 1.25rem;
+  }
+
+  .teaser-challenge-card {
+    background: #ffffff;
+    border: 1px solid var(--vm-border);
+    border-radius: 16px;
+    box-shadow: 0 10px 24px rgba(17, 24, 39, 0.08);
+    padding: 1.1rem 1.2rem;
+  }
+
+  .teaser-challenge-card p {
+    margin-top: 0.7rem;
+  }
+
+  .teaser-challenge-card .caption {
+    font-size: 0.98rem;
+    max-width: none;
+    text-align: left;
+  }
+
+  .ablation-table {
+    font-size: 0.88rem;
+  }
+
+  .ablation-table td:first-child {
+    font-weight: 650;
+    text-align: left;
+  }
+
+  .ablation-table .checkmark {
+    color: var(--vm-green);
+    font-weight: 900;
+  }
+
+  .ablation-idea-grid {
+    display: grid;
+    gap: 0.9rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 1rem;
+  }
+
+  .ablation-idea-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid var(--vm-border);
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(17, 24, 39, 0.06);
+    padding: 1rem;
+  }
+
+  .ablation-idea-card strong {
+    color: var(--vm-dark);
+    display: block;
+    font-family: 'Google Sans', 'Noto Sans', sans-serif;
+    font-size: 1rem;
+    margin-bottom: 0.45rem;
+  }
+
+  .ablation-idea-card span {
+    color: var(--vm-muted);
+    display: block;
+    font-size: 0.92rem;
+    line-height: 1.45;
+  }
+
+  .evaluation-panel {
+    background: #ffffff;
+    border: 1px solid var(--vm-border);
+    border-radius: 18px;
+    box-shadow: 0 14px 30px rgba(17, 24, 39, 0.08);
+    margin-top: 1rem;
+    padding: 1.25rem;
+  }
+
+  .panel-kicker {
+    background: #fef3c7;
+    border-radius: 10px;
+    color: #111827;
+    display: inline-block;
+    font-family: 'Google Sans', 'Noto Sans', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 800;
+    padding: 0.25rem 0.6rem;
+  }
+
+  .text-benchmark-strip {
+    align-items: center;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1.2fr 1fr;
+  }
+
+  .section-gray {
+    background-color: var(--vm-light);
+  }
+
+  .content p {
+    font-size: 1.06rem;
+    line-height: 1.72;
+  }
+
+  .highlight-box {
+    background: #ffffff;
+    border: 1px solid var(--vm-border);
+    border-radius: 16px;
+    padding: 1.25rem 1.35rem;
+    height: 100%;
+    box-shadow: 0 10px 22px rgba(17, 24, 39, 0.06);
+  }
+
+  .highlight-box h4 {
+    font-size: 1.12rem;
+    font-weight: 800;
+    margin-bottom: 0.65rem;
+  }
+
+  .pill {
+    display: inline-block;
+    border-radius: 999px;
+    padding: 0.25rem 0.7rem;
+    font-size: 0.88rem;
+    font-weight: 700;
+    background-color: #eef2ff;
+    color: #4338ca;
+    margin-bottom: 0.6rem;
+  }
+
+  .center {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .method-table {
+    max-width: 1120px;
+    border-collapse: separate;
+    border-spacing: 18px;
+  }
+
+  .method-table td {
+    vertical-align: top;
+    background: #ffffff;
+    border: 1px solid var(--vm-border);
+    border-radius: 16px;
+    padding: 1.2rem;
+    box-shadow: 0 10px 22px rgba(17, 24, 39, 0.06);
+  }
+
+  .method-heading {
+    font-size: 1.17rem;
+    font-weight: 800;
+    background-color: #fff7cc;
+    padding: 0.1rem 0.35rem;
+    border-radius: 6px;
+  }
+
+  .stat-card {
+    background: #ffffff;
+    border: 1px solid var(--vm-border);
+    border-radius: 16px;
+    padding: 1.2rem;
+    text-align: center;
+    height: 100%;
+    box-shadow: 0 10px 22px rgba(17, 24, 39, 0.05);
+  }
+
+  .stat-number {
+    font-size: 2.1rem;
+    font-weight: 900;
+    color: var(--vm-blue);
+    line-height: 1;
+  }
+
+  .stat-label {
+    margin-top: 0.45rem;
+    color: var(--vm-muted);
+    font-weight: 600;
+  }
+
+  .results-table {
+    width: 100%;
+    font-size: 0.95rem;
+    border-collapse: collapse;
+    overflow: hidden;
+    border-radius: 14px;
+    background: white;
+    box-shadow: 0 10px 24px rgba(17, 24, 39, 0.07);
+  }
+
+  .results-table th,
+  .results-table td {
+    padding: 0.72rem 0.6rem;
+    border-bottom: 1px solid var(--vm-border);
+    text-align: center;
+  }
+
+  .results-table th {
+    background: #111827;
+    color: #ffffff;
+    font-weight: 800;
+  }
+
+  .results-table td:first-child,
+  .results-table th:first-child {
+    text-align: left;
+  }
+
+  .results-table .group-row td {
+    background: #f3f4f6;
+    color: #374151;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 0.78rem;
+  }
+
+  .results-table .ours td {
+    background: #ecfdf5;
+    font-weight: 900;
+  }
+
+  .results-table .best {
+    color: var(--vm-green);
+    font-weight: 900;
+  }
+
+  .quote-card {
+    border-left: 5px solid var(--vm-purple);
+    background: #faf5ff;
+    padding: 1rem 1.25rem;
+    border-radius: 0 14px 14px 0;
+    color: #3b0764;
+    font-weight: 650;
+  }
+
+  pre {
+    border-radius: 12px;
+    background-color: #111827 !important;
+    color: #e5e7eb;
+    padding: 1.2rem;
+    white-space: pre-wrap;
+  }
+
+  code {
+    color: inherit;
+  }
+
+  .footer-note {
+    color: #6b7280;
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 768px) {
+    .title.is-1 {
+      font-size: 2.15rem;
+    }
+
+    .publication-title-icon {
+      height: 54px;
+    }
+
+    .subtitle-line {
+      font-size: 1.25rem;
+    }
+
+    .teaser-challenge-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .text-benchmark-strip {
+      grid-template-columns: 1fr;
+    }
+
+    .ablation-idea-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .method-table,
+    .method-table tbody,
+    .method-table tr,
+    .method-table td {
+      display: block;
+      width: 100% !important;
+    }
+
+    .method-table {
+      border-spacing: 0;
+    }
+
+    .method-table td {
+      margin-bottom: 1rem;
+    }
+
+    .results-table {
+      font-size: 0.8rem;
+    }
+
+    .results-table th,
+    .results-table td {
+      padding: 0.5rem 0.35rem;
+    }
+  }
+</style>
+
+<body>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title publication-title-row">
+              <span class="publication-title-main">
+                <img src="./static/images/visualmem-icon.png" class="publication-title-icon" alt="VisualMem icon">
+                <span>Personal Visual Memory</span>
+              </span>
+              <span class="publication-title-subline">
+                from <span class="blue-text">Explicit</span> and <span class="purple-text">Implicit</span> Evidence
+              </span>
+            </h1>
+            
+            <div class="is-size-4 publication-authors author-list">
+              <span class="author-block"><a href="https://viettmab.github.io/">Viet Nguyen</a><sup>1</sup></span>
+              <span class="author-block"><a href="https://thaoshibe.github.io/">Thao Nguyen</a><sup>2</sup></span>
+              <span class="author-block"><a href="https://engineering.jhu.edu/vpatel36/team/vishalpatel/">Vishal M. Patel</a><sup>1</sup><span class="advisor-marker">⚑</span></span>
+              <span class="author-block"><a href="https://yuheng-li.github.io/">Yuheng Li</a><sup>3</sup><span class="advisor-marker">⚑</span></span>
+            </div>
+            <div class="affiliation-logos">
+              <img class="affiliation-logo" src="./static/images/jhu-logo.png" alt="Johns Hopkins University logo">
+              <img class="affiliation-logo uwmadison-logo" src="./static/images/uwmadison-logo.png" alt="University of Wisconsin-Madison logo">
+              <img class="affiliation-logo adobe-logo" src="./static/images/adobe-logo.png" alt="Adobe logo">
+            </div>
+            <div class="is-size-4 publication-authors affiliation-list">
+              <span><sup>1</sup>Johns Hopkins University</span>
+              <span><sup>2</sup>University of Wisconsin-Madison</span>
+              <span><sup>3</sup>Adobe Research</span>
+            </div>
+            <div class="is-size-5 publication-authors advising-note">
+              <span class="advisor-marker">⚑</span>: equal advising
+            </div>
+
+            <div class="column has-text-centered" style="margin-top: 1rem;">
+              <div class="publication-links">
+                <span class="link-block">
+                  <a href="https://arxiv.org/" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="ai ai-arxiv"></i></span>
+                    <span>arXiv</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://github.com/viettmab/visualmem" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="fab fa-github"></i></span>
+                    <span>Code</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://huggingface.co/datasets/viettmab/visualmem" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="fas fa-database"></i></span>
+                    <span>Dataset</span>
+                  </a>
+                </span>
+                <!-- <span class="link-block">
+                  <a href="./static/poster.pdf" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="fas fa-chalkboard"></i></span>
+                    <span>Poster</span>
+                  </a>
+                </span> -->
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-gray">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-six-fifths">
+          <h2 class="title is-3">📜 Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Long-term memory is increasingly important for personalized AI agents, yet existing benchmarks and methods remain largely text-centric. Even when images are included, the user-specific information needed for later questions is often recoverable from text alone, and most memory systems reduce image turns to generic captions. Yet images often carry personal information that text rarely states: <b>explicit evidence</b> such as recurring user-associated entities, and <b>implicit evidence</b> such as latent user facts inferred from visual or multimodal cues.
+            </p>
+            <p>
+              We introduce a benchmark for <b>personal visual memory</b> that targets both forms of evidence, and propose <b>VISUALMEM</b>, a hybrid visual-text architecture that augments a text-memory backend with a structured personal visual memory module. Rather than collapsing images into captions, <b>VISUALMEM</b> uses conversational context to resolve identity, ownership, and durable user facts. Experiments show that <b>VISUALMEM</b> substantially outperforms prior memory systems on our benchmark while remaining competitive on standard text-memory benchmarks, indicating that personal visual memory is a distinct and important component of long-term memory for personalized AI agents.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-six-fifths">
+          <h2 class="title is-3">🧩 Personal Visual-Memory Tasks</h2>
+        </div>
+      </div>
+
+      <center>
+        <img src="./static/images/teaser.png" class="figure-img" alt="Overview of explicit and implicit visual memory tasks.">
+      </center>
+      <p class="caption has-text-centered">
+        VisualMem introduces personal visual-memory tasks where decisive evidence comes from images: explicit entity and implicit fact.
+      </p>
+
+      <div class="teaser-challenge-grid content has-text-justified">
+        <div class="teaser-challenge-card">
+          <b class="method-heading">👤 Explicit Entity</b>
+          <p>
+            The model must remember a recurring visual entity and its identity from earlier images, such as a user-associated asset (object or pet) or a person from the user’s social graph.
+          </p>
+          <p class="caption">
+            Example: later recognizing a globe, pet, or recurring person even when the text does not restate the identity.
+          </p>
+        </div>
+        <div class="teaser-challenge-card">
+          <b class="method-heading">💡 Implicit Fact</b>
+          <p>
+            The model must infer a durable personal fact from visual cues, sometimes combined with dialogue. The conversation may be unrelated to the fact, so the evidence is visually grounded.
+          </p>
+          <p class="caption">
+            Example: cat items visible in a kitchen can imply that the user has a cat, even when the chat is about cooking.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-six-fifths">
+          <h2 class="title is-3">🔎 Motivation: Why Captions Are Not Enough</h2>
+        </div>
+      </div>
+
+      <div class="columns is-centered">
+        <div class="column">
+          <div class="highlight-box">
+            <span class="pill">Problem</span>
+            <h4>Text-centric memory misses visual evidence</h4>
+            <p>
+              Prior memory benchmarks mainly test facts explicitly stated in dialogue or inferable from text alone. This overlooks personal information that appears only in shared images.
+            </p>
+          </div>
+        </div>
+        <div class="column">
+          <div class="highlight-box">
+            <span class="pill">Limitation</span>
+            <h4>Generic captions are lossy</h4>
+            <p>
+              Captions can omit identity, ownership, recurrence, and small visual details that are essential for personalized memory over long conversations.
+            </p>
+          </div>
+        </div>
+        <div class="column">
+          <div class="highlight-box">
+            <span class="pill">Goal</span>
+            <h4>Remember visual facts over time</h4>
+            <p>
+              A memory agent should retain persistent visual evidence and update it as more images and context become available.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-gray">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-six-fifths">
+          <h2 class="title is-3">🏗️ Benchmark Construction</h2>
+          <p class="content">
+            The benchmark is built from persistent user personas, recurring social contacts, user-owned assets, event timelines, multimodal conversations, and globally consistent generated images.
+          </p>
+        </div>
+      </div>
+
+      <center>
+        <img src="./static/images/conversation_gen.png" class="figure-img" alt="Conversation construction from persistent user context.">
+      </center>
+      <p class="caption has-text-centered">
+        Conversation generation creates explicit entity, implicit fact, and distractor interactions from a persistent persona context.
+      </p>
+
+      <center>
+        <img src="./static/images/image_gen.png" class="figure-img" alt="Image generation with global consistency.">
+      </center>
+      <p class="caption has-text-centered">
+        Images are generated with consistent entity references, location-level scene references, and human quality control.
+      </p>
+
+      <br>
+      <div class="columns is-centered">
+        <div class="column is-one-quarter">
+          <div class="stat-card">
+            <div class="stat-number">10</div>
+            <div class="stat-label">Personas</div>
+          </div>
+        </div>
+        <div class="column is-one-quarter">
+          <div class="stat-card">
+            <div class="stat-number">1,717</div>
+            <div class="stat-label">Events</div>
+          </div>
+        </div>
+        <div class="column is-one-quarter">
+          <div class="stat-card">
+            <div class="stat-number">1,718</div>
+            <div class="stat-label">Images</div>
+          </div>
+        </div>
+        <div class="column is-one-quarter">
+          <div class="stat-card">
+            <div class="stat-number">696</div>
+            <div class="stat-label">Questions</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns is-centered">
+        <div class="column is-one-third">
+          <div class="stat-card">
+            <div class="stat-number">171.7</div>
+            <div class="stat-label">Avg. events per persona</div>
+          </div>
+        </div>
+        <div class="column is-one-third">
+          <div class="stat-card">
+            <div class="stat-number">11.84</div>
+            <div class="stat-label">Avg. turns per event</div>
+          </div>
+        </div>
+        <div class="column is-one-third">
+          <div class="stat-card">
+            <div class="stat-number">131K</div>
+            <div class="stat-label">Avg. text tokens per persona</div>
+          </div>
+        </div>
+      </div>
+
+      <br>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-six-fifths">
+          <h2 class="title is-3">⚙️ VISUALMEM: Hybrid Visual–Text Memory</h2>
+        </div>
+      </div>
+
+      <center>
+        <img src="./static/images/approach.png" class="figure-img" alt="Overview of VISUALMEM architecture.">
+      </center>
+      <p class="caption has-text-centered">
+        VISUALMEM analyzes images with dialogue context, stores structured personal visual memory, and combines visual retrieval with text-memory retrieval at question time.
+      </p>
+
+      <br>
+      <table class="center method-table">
+        <tr>
+          <td width="33%">
+            <b class="method-heading">1️⃣ Context-guided interpretation</b>
+            <br><br>
+            <p>
+              Each image is interpreted jointly with surrounding conversation, helping resolve who is visible, whose space is depicted, and whether the image is personally relevant.
+            </p>
+          </td>
+          <td width="33%">
+            <b class="method-heading">2️⃣ Deferred commitment</b>
+            <br><br>
+            <p>
+              Ambiguous images are stored in a pending state and revisited later when more memory evidence becomes available, reducing premature or noisy extractions.
+            </p>
+          </td>
+          <td width="33%">
+            <b class="method-heading">3️⃣ Structured extraction</b>
+            <br><br>
+            <p>
+              Confirmed images produce structured memories over relationships, recurring entities, user-owned objects or pets, locations, and durable visual facts.
+            </p>
+          </td>
+        </tr>
+      </table>
+
+      <div class="quote-card">
+        Key idea: personal visual memory should preserve identity, ownership, recurrence, and durable facts instead of compressing images into generic captions.
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
+  <section class="section section-gray">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-six-fifths">
+          <h2 class="title is-3">📊 Main Results</h2>
+          <!-- <p class="content">
+            Accuracy on the visual memory benchmark.
+          </p> -->
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th>Method</th>
+              <th>Tokens</th>
+              <th>Target Person ↑</th>
+              <th>Target Asset ↑</th>
+              <th>Implicit Fact<br>Visual-Only ↑</th>
+              <th>Implicit Fact<br>Multimodal ↑</th>
+              <th>Overall ↑</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="group-row"><td colspan="7">Naive LLM</td></tr>
+            <tr>
+              <td>Full Context</td><td>325K</td><td>100.0</td><td>94.6</td><td>91.4</td><td>98.0</td><td>95.1</td>
+            </tr>
+            <tr>
+              <td>Oracle</td><td>1900</td><td>100.0</td><td>99.1</td><td>97.9</td><td>98.5</td><td>98.6</td>
+            </tr>
+            <tr class="group-row"><td colspan="7">RAG-based Methods</td></tr>
+            <tr>
+              <td>Self-RAG</td><td>2000</td><td>21.0</td><td>35.0</td><td>17.1</td><td>22.1</td><td>22.1</td>
+            </tr>
+            <tr>
+              <td>HippoRAG2</td><td>1000</td><td>25.0</td><td>26.5</td><td>25.4</td><td>32.7</td><td>27.6</td>
+            </tr>
+            <tr class="group-row"><td colspan="7">Memory-based Methods</td></tr>
+            <tr>
+              <td>LightMem</td><td>500</td><td>30.0</td><td>40.2</td><td>45.4</td><td>58.8</td><td>46.1</td>
+            </tr>
+            <tr>
+              <td>SimpleMem</td><td>500</td><td>3.0</td><td>40.2</td><td>42.9</td><td>43.2</td><td>36.8</td>
+            </tr>
+            <tr>
+              <td>Mem0</td><td>500</td><td>38.0</td><td>33.9</td><td>40.8</td><td>57.9</td><td>45.0</td>
+            </tr>
+            <tr>
+              <td>MemOS</td><td>1187</td><td>45.0</td><td>59.9</td><td>52.1</td><td>64.8</td><td>56.0</td>
+            </tr>
+            <tr class="ours">
+              <td>VISUALMEM (Ours)</td><td>1980</td><td class="best">95.0</td><td class="best">91.1</td><td class="best">77.9</td><td class="best">83.4</td><td class="best">84.1</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <br>
+      <div class="columns is-centered">
+        <div class="column">
+          <div class="highlight-box">
+            <h4>👤 Strong gains on recurring entities</h4>
+            <p>
+              VISUALMEM preserves recurring visual identities and user-owned assets, showing the value of storing structured visual memory instead of generic captions.
+            </p>
+          </div>
+        </div>
+        <div class="column">
+          <div class="highlight-box">
+            <h4>💡 Better implicit fact recall</h4>
+            <p>
+              VISUALMEM improves both visual-only and multimodal implicit-fact settings by retaining visual cues and connecting them to dialogue context.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-six-fifths">
+          <h2 class="title is-3">🧪 Text Benchmarks and Ablations</h2>
+        </div>
+      </div>
+
+      <div class="evaluation-panel">
+        <div class="text-benchmark-strip">
+          <div>
+            <span class="panel-kicker">📚 Compatibility with text memory</span>
+            <p class="content" style="margin-top: 0.85rem;">
+              On text-centric long-term memory benchmarks, VISUALMEM remains comparable to its MemOS text-memory backend while adding visual memory capability.
+            </p>
+          </div>
+          <div class="table-container">
+            <table class="results-table">
+              <thead>
+                <tr><th>Method</th><th>LOCOMO ↑</th><th>PersonaMem ↑</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>MemOS</td><td>56.8</td><td>45.5</td></tr>
+                <tr class="ours"><td>VISUALMEM</td><td>58.1</td><td>46.3</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="evaluation-panel">
+        <span class="panel-kicker">🔬 What matters in VISUALMEM?</span>
+        <div class="ablation-idea-grid">
+          <div class="ablation-idea-card">
+            <strong>👁️ Visual memory drives the benchmark</strong>
+            <span>Visual memory is much stronger than text-only memory for recurring people and assets, confirming that the benchmark depends on image evidence.</span>
+          </div>
+          <div class="ablation-idea-card">
+            <strong>⏳ Pending reduces noisy memories</strong>
+            <span>Deferring uncertain images helps avoid premature extraction, improving memory quality when later visual context resolves ambiguity.</span>
+          </div>
+          <div class="ablation-idea-card">
+            <strong>🧭 Broader context helps user facts</strong>
+            <span>The full conversation window gives the best overall score, especially when implicit facts require linking visual cues with dialogue.</span>
+          </div>
+        </div>
+
+        <div class="table-container" style="margin-top: 1rem;">
+          <table class="results-table ablation-table">
+            <thead>
+              <tr>
+                <th>Text</th>
+                <th>Visual</th>
+                <th>Pending</th>
+                <th>Window</th>
+                <th>Tokens</th>
+                <th>Target Person ↑</th>
+                <th>Target Asset ↑</th>
+                <th>Implicit Fact<br>Visual-Only ↑</th>
+                <th>Implicit Fact<br>Multimodal ↑</th>
+                <th>Overall ↑</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="checkmark">✓</span></td><td><span class="checkmark">✓</span></td><td></td><td>2</td><td>1901</td><td>60.0</td><td>90.2</td><td>79.6</td><td>74.2</td><td>76.9</td>
+              </tr>
+              <tr>
+                <td><span class="checkmark">✓</span></td><td></td><td><span class="checkmark">✓</span></td><td>2</td><td>1247</td><td>40.4</td><td>65.2</td><td>60.0</td><td>67.3</td><td>60.1</td>
+              </tr>
+              <tr>
+                <td></td><td><span class="checkmark">✓</span></td><td><span class="checkmark">✓</span></td><td>2</td><td>635</td><td>95.0</td><td>91.1</td><td>80.3</td><td>68.3</td><td>80.7</td>
+              </tr>
+              <tr>
+                <td><span class="checkmark">✓</span></td><td><span class="checkmark">✓</span></td><td><span class="checkmark">✓</span></td><td>2</td><td>1882</td><td>95.0</td><td>91.1</td><td>76.1</td><td>76.9</td><td>81.5</td>
+              </tr>
+              <tr class="ours">
+                <td><span class="checkmark">✓</span></td><td><span class="checkmark">✓</span></td><td><span class="checkmark">✓</span></td><td>Full</td><td>1980</td><td>95.0</td><td>91.1</td><td>77.9</td><td>83.4</td><td>84.1</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- <section class="section section-gray">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-six-fifths">
+          <h2 class="title is-3">⚠️ Broader Impact and Limitations</h2>
+        </div>
+      </div>
+
+      <div class="columns is-centered">
+        <div class="column">
+          <div class="highlight-box">
+            <h4>Positive impact</h4>
+            <p>
+              Better multimodal memory could make assistants more useful for accessibility, daily assistance, and personalized human-AI interaction.
+            </p>
+          </div>
+        </div>
+        <div class="column">
+          <div class="highlight-box">
+            <h4>Privacy and safety risks</h4>
+            <p>
+              Strong visual memory could be misused for profiling, surveillance, or intrusive inference from personal images, so deployment needs user control and privacy safeguards.
+            </p>
+          </div>
+        </div>
+        <div class="column">
+          <div class="highlight-box">
+            <h4>Current limitations</h4>
+            <p>
+              The benchmark is synthetic, uses a limited number of personas, and does not fully study real-world distribution shift, noisy images, or low-quality visual inputs.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section> -->
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">📥 BibTeX</h2>
+      <pre><code>@article{nguyen2026visualmem,
+  title={Personal Visual Memory from Explicit and Implicit Evidence},
+  author={Nguyen, Viet and Nguyen, Thao and Patel, Vishal M and Li, Yuheng},
+  journal={arXiv preprint},
+  year={2026}
+}</code></pre>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 1rem;">
+    <div class="container is-max-desktop has-text-centered">
+      <p class="footer-note">
+        Website template style inspired by common academic project pages.
+      </p>
+    </div>
+  </section>
+
+</body>
+</html>
