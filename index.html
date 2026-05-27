@@ -18,8 +18,24 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
   <link rel="icon" href="./static/images/visualmem-icon.png">
+  <style>
+    #mapmyvisitors { display: none !important; }
+    .mapmyvisitors { display: none !important; }
+    div[id*="mapmyvisitors"] { display: none !important; }
+    div[class*="mapmyvisitors"] { display: none !important; }
+    iframe[src*="mapmyvisitors"] { display: none !important; }
+    script[src*="mapmyvisitors"] + div { display: none !important; }
+    script[src*="mapmyvisitors"] + iframe { display: none !important; }
+    [id*="mmv"] { display: none !important; }
+    [class*="mmv"] { display: none !important; }
+  </style>
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=pwOsmKR4t4RSNVGDPPr63nQ5SGf24wSjKDRsa1TQOPw&cl=ffffff&w=a"></script>
 </head>
 
 <style>
